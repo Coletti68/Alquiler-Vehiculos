@@ -1,0 +1,156 @@
+CREATE DATABASE AlquilerBDD;
+GO
+
+USE AlquilerBDD;
+GO
+
+CREATE TABLE Usuario (
+    UsuarioId INT PRIMARY KEY IDENTITY,
+    Nombre_Completo NVARCHAR(100) NOT NULL,
+    PasswordHash NVARCHAR(255) NOT NULL,
+    DNI NVARCHAR(12) UNIQUE NOT NULL,
+    FechaNacimiento DATE,
+    Telefono NVARCHAR(30),
+    Email NVARCHAR(100) UNIQUE NOT NULL,
+    Pais NVARCHAR(100),
+    Direccion NVARCHAR(200),
+    FechaRegistro DATETIME DEFAULT GETDATE(),
+    Rol NVARCHAR(50) DEFAULT 'Usuario',
+    ResetToken NVARCHAR(255),
+    ResetTokenExpira DATETIME,
+    Activo BIT DEFAULT 1
+);
+
+CREATE TABLE Empleado (
+    EmpleadoId INT PRIMARY KEY IDENTITY,
+    Nombre_Completo NVARCHAR(100),
+    Cargo NVARCHAR(50),
+    DNI NVARCHAR(8) UNIQUE NOT NULL,
+    Telefono NVARCHAR(20),
+    Email NVARCHAR(100) UNIQUE NOT NULL,
+    Sucursal NVARCHAR(50),
+    FechaAlta DATE DEFAULT CAST(GETDATE() AS DATE),
+    Activo BIT DEFAULT 1
+);
+
+CREATE TABLE Vehiculo (
+    VehiculoId INT PRIMARY KEY IDENTITY,
+    Marca NVARCHAR(50),
+    Modelo NVARCHAR(50),
+    Anio INT,
+    Placa NVARCHAR(20) UNIQUE,
+    Color NVARCHAR(30),
+    Tipo NVARCHAR(30),
+    PrecioPorDia DECIMAL(10,2),
+    Estado NVARCHAR(20) CHECK (Estado IN ('Disponible', 'Alquilado', 'Mantenimiento', 'Reservado'))
+);
+
+CREATE TABLE Alquiler (
+    AlquilerId INT PRIMARY KEY IDENTITY,
+    UsuarioId INT FOREIGN KEY REFERENCES Usuario(UsuarioId),
+    VehiculoId INT FOREIGN KEY REFERENCES Vehiculo(VehiculoId),
+    EmpleadoId INT FOREIGN KEY REFERENCES Empleado(EmpleadoId),
+    FechaInicio DATE,
+    FechaFin DATE,
+    Total DECIMAL(10,2),
+    Estado NVARCHAR(20) CHECK (Estado IN ('Reservado','Activo', 'Finalizado', 'Cancelado')),
+    AceptoTerminos BIT DEFAULT 1
+);
+
+CREATE TABLE Pago (
+    PagoId INT PRIMARY KEY IDENTITY,
+    AlquilerId INT FOREIGN KEY REFERENCES Alquiler(AlquilerId),
+    FechaPago DATE,
+    Monto DECIMAL(10,2),
+    MetodoPago NVARCHAR(30) CHECK (MetodoPago IN ('Efectivo', 'Tarjeta', 'Transferencia')),
+    CodigoReferencia NVARCHAR(100),
+    FechaRegistro DATETIME DEFAULT GETDATE(),
+    Observaciones NVARCHAR(255)
+);
+
+CREATE TABLE Multa (
+    MultaId INT PRIMARY KEY IDENTITY,
+    AlquilerId INT FOREIGN KEY REFERENCES Alquiler(AlquilerId),
+    Descripcion NVARCHAR(200),
+    Monto DECIMAL(10,2),
+    FechaMulta DATE DEFAULT CAST(GETDATE() AS DATE),
+    Estado NVARCHAR(50) CHECK (Estado IN ('Pendiente', 'Pago', 'Atrasado')),
+    Tipo NVARCHAR(50) CHECK (Tipo IN ('Velocidad', 'Daños', 'Entrega tardía', 'Otro'))
+);
+
+CREATE TABLE Contacto (
+    ContactoId INT PRIMARY KEY IDENTITY,
+    UsuarioId INT FOREIGN KEY REFERENCES Usuario(UsuarioId),
+    Email NVARCHAR(100),
+    Motivo NVARCHAR(50) CHECK (Motivo IN ('Consulta', 'Queja', 'Sugerencia', 'Problema tecnico', 'Otro')),
+    Mensaje NVARCHAR(100),
+    Fecha DATETIME DEFAULT GETDATE(),
+    Respondido BIT DEFAULT 0
+);
+
+INSERT INTO Empleado (Nombre_Completo, Cargo, DNI, Telefono, Email, Sucursal, Activo)
+VALUES 
+('Valeria Gómez', 'Gerente', '12345678', '1133123456', 'valeria.gomez@rentacar.com', 'Sucursal Norte', 1),
+('Carlos Medina', 'Atención al Cliente', '23456789', '1133544321', 'carlos.medina@rentacar.com', 'Sucursal Centro', 1),
+('Luciana Torres', 'Administración', '34567890', '1167894321', 'luciana.torres@rentacar.com', 'Sucursal Oeste', 1),
+('Diego Sánchez', 'Mecánico', '45678901', '1177889988', 'diego.sanchez@rentacar.com', 'Sucursal Sur', 1),
+('Florencia Ruiz', 'Recepcionista', '56789012', '1155112233', 'florencia.ruiz@rentacar.com', 'Sucursal Este', 1);
+
+INSERT INTO Vehiculo (Marca, Modelo, Anio, Placa, Color, Tipo, PrecioPorDia, Estado)
+VALUES 
+('FIAT', 'Cronos', 2022, 'AB123CD', 'Banchisa', 'Sedán', 7800.00, 'Disponible'),
+('FIAT', 'Cronos', 2022, 'AF456GH', 'Negro', 'Sedán', 7800.00, 'Disponible'),
+('FIAT', 'Cronos', 2023, 'AG789JK', 'Plata', 'Sedán', 8000.00, 'Disponible'),
+('FIAT', 'Cronos', 2023, 'AJ012LM', 'Rojo', 'Sedán', 8000.00, 'Disponible'),
+('FIAT', 'Cronos', 2024, 'AK345NO', 'Gris', 'Sedán', 8200.00, 'Disponible'),
+('FIAT', 'Cronos', 2024, 'AL678PQ', 'Banchisa', 'Sedán', 8200.00, 'Disponible'),
+('FIAT', 'Cronos', 2025, 'AM901RS', 'Negro', 'Sedán', 8500.00, 'Disponible'),
+('FIAT', 'Cronos', 2025, 'AN234TU', 'Plata', 'Sedán', 8500.00, 'Disponible'),
+('FIAT', 'Cronos', 2025, 'AO567VW', 'Rojo', 'Sedán', 8500.00, 'Disponible'),
+('FIAT', 'Cronos', 2025, 'AP890XY', 'Gris', 'Sedán', 8500.00, 'Disponible');
+
+//INSERTAR USUARIOS DESDE SWAGGER ASI SE HASHEA LA CONTRASENIA, SE INSERTAN UNO X UNO
+
+{
+  "nombreCompleto": "Lucía Martínez",
+  "email": "lucia.argentina@mail.com",
+  "password": "lucia123",
+  "dni": "12345678",
+  "fechaNacimiento": "1995-06-15",
+  "telefono": "3811234567",
+  "direccion": "Av. Corrientes 123",
+  "pais": "Argentina"
+}
+
+{
+  "nombreCompleto": "Pedro Silva",
+  "email": "pedro.brasil@mail.com",
+  "password": "pedro123",
+  "dni": "12345678901",
+  "fechaNacimiento": "1990-08-22",
+  "telefono": "+55 11 91234-5678",
+  "direccion": "Rua das Flores 456",
+  "pais": "Brasil"
+}
+
+{
+  "nombreCompleto": "María López",
+  "email": "maria.paraguay@mail.com",
+  "password": "maria123",
+  "dni": "123456",
+  "fechaNacimiento": "1988-03-10",
+  "telefono": "+595 981234567",
+  "direccion": "Calle Palma 789",
+  "pais": "Paraguay"
+}
+
+{
+  "nombreCompleto": "Andrés Fuentes",
+  "email": "andres.chile@mail.com",
+  "password": "andres123",
+  "dni": "123456789",
+  "fechaNacimiento": "2000-12-01",
+  "telefono": "+56 9 8765 4321",
+  "direccion": "Av. Providencia 321",
+  "pais": "Chile"
+}
