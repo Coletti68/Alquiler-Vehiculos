@@ -1,0 +1,1 @@
+export const API_URL = '/api'; // ← ya no ponés el localhost
