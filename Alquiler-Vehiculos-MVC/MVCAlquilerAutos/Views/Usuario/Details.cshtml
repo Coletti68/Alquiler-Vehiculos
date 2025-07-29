@@ -1,0 +1,96 @@
+﻿
+@model MVCAlquilerAutos.Models.Usuario
+
+@{
+    ViewData["Title"] = "Detalle de Usuario";
+}
+
+<h2>Detalle de Usuario</h2>
+
+<div>
+    <h4>Datos Personales</h4>
+    <dl class="row">
+        <dt class="col-sm-2">Nombre Completo</dt>
+        <dd class="col-sm-10">@Model.NombreCompleto</dd>
+
+        <dt class="col-sm-2">DNI</dt>
+        <dd class="col-sm-10">@Model.Dni</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+
+        <dt class="col-sm-2">Teléfono</dt>
+        <dd class="col-sm-10">@Model.Telefono</dd>
+
+        <dt class="col-sm-2">País</dt>
+        <dd class="col-sm-10">@Model.Pais</dd>
+
+        <dt class="col-sm-2">Dirección</dt>
+        <dd class="col-sm-10">@Model.Direccion</dd>
+
+        <dt class="col-sm-2">Fecha de Nacimiento</dt>
+        <dd class="col-sm-10">@Model.FechaNacimiento.ToShortDateString()</dd>
+
+        <dt class="col-sm-2">Fecha de Registro</dt>
+        <dd class="col-sm-10">@Model.FechaRegistro.ToShortDateString()</dd>
+
+        <dt class="col-sm-2">Activo</dt>
+        <dd class="col-sm-10">@((Model.Activo) ? "Sí" : "No")</dd>
+    </dl>
+</div>
+
+<hr />
+
+<h4>Historial de Alquileres</h4>
+
+@if (Model.Alquileres == null || !Model.Alquileres.Any())
+{
+    <p>No hay alquileres registrados para este usuario.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Alquiler ID</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Multas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var alquiler in Model.Alquileres)
+            {
+                <tr>
+                    <td>@alquiler.AlquilerId</td>
+                    <td>@alquiler.FechaInicio.ToShortDateString()</td>
+                    <td>@alquiler.FechaFin.ToShortDateString()</td>
+                    <td>@alquiler.Total.ToString("C")</td>
+                    <td>@alquiler.Estado</td>
+                    <td>
+                        @if (alquiler.Multas == null || !alquiler.Multas.Any())
+                        {
+                            <span>Sin multas</span>
+                        }
+                        else
+                        {
+                            <ul>
+                                @foreach (var multa in alquiler.Multas)
+                                {
+                                    <li>
+                                        <strong>@multa.Tipo</strong>: @multa.Descripcion - @multa.Monto.ToString("C") - Estado: @multa.Estado
+                                        <!-- Aquí podés poner botón para marcar pagada si querés -->
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a asp-action="Index" class="btn btn-secondary mt-3">Volver al listado</a>

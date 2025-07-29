@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Panel de Administración";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center bg-dark text-white py-5" style="background-image: url('/img/fondo.jpeg'); background-size: cover; background-position: center;">
+    <h1 class="display-4">Bienvenido al Panel de Administración</h1>
+    <p class="lead">Gestioná vehículos, usuarios y alquileres desde un solo lugar</p>
+    
+</div>
+
+<div class="container mt-5">
+    <div class="row text-center">
+        <div class="col-md-4">
+            <a href="@Url.Action("Index", "Vehiculos")" class="text-decoration-none text-dark">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Vehículos</h5>
+                        <p class="card-text">Gestioná el inventario de autos</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="@Url.Action("Index", "Usuario")" class="text-decoration-none text-dark">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Usuarios</h5>
+                        <p class="card-text">Administrá los usuarios registrados</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="@Url.Action("Index", "Alquiler")" class="text-decoration-none text-dark">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Alquileres</h5>
+                        <p class="card-text">Controlá las reservas y alquileres</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

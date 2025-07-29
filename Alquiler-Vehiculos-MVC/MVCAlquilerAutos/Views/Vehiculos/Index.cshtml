@@ -1,0 +1,51 @@
+﻿@model List<MVCAlquilerAutos.Models.Vehiculo>
+
+@{
+    ViewData["Title"] = "Listado de Vehículos";
+}
+
+<h2 class="mt-4">Listado de Vehículos</h2>
+
+<a class="btn btn-success mb-3" asp-controller="Vehiculos" asp-action="Create">+ Crear Vehículo</a>
+
+<table class="table table-striped mt-3">
+    <thead class="table-dark">
+        <tr>
+            <th>Imagen</th>
+            <th>ID</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Año</th>
+            <th>Placa</th>
+            <th>Color</th>
+            <th>Tipo</th>
+            <th>Precio por Día</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vehiculo in Model)
+        {
+            var imagenRuta = Url.Content($"~/img/{vehiculo.Color.ToLower()}.png");
+            <tr>
+                <td>
+                    <img src="@imagenRuta" alt="@vehiculo.Color" width="100" height="60" style="object-fit:cover;" />
+                </td>
+                <td>@vehiculo.VehiculoId</td>
+                <td>@vehiculo.Marca</td>
+                <td>@vehiculo.Modelo</td>
+                <td>@vehiculo.Anio</td>
+                <td>@vehiculo.Placa</td>
+                <td>@vehiculo.Color</td>
+                <td>@vehiculo.Tipo</td>
+                <td>@vehiculo.PrecioPorDia.ToString("C")</td>
+                <td>@vehiculo.Estado</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@vehiculo.VehiculoId">Editar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

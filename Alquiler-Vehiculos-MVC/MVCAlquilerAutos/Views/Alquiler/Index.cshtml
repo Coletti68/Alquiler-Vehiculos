@@ -1,0 +1,118 @@
+﻿@model IEnumerable<MVCAlquilerAutos.Models.Alquiler>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-info">@TempData["Mensaje"]</div>
+}
+
+@{
+    ViewData["Title"] = "Listado de Alquileres";
+}
+
+<h2 class="mt-4">Listado de Alquileres</h2>
+
+<div class="mb-3">
+    <a asp-action="FinalizarVencidos" class="btn btn-danger ms-2">Finalizar Vencidos</a>
+    <a asp-action="GetHabilitados" class="btn btn-success ms-2">Ver Habilitados</a>
+</div>
+
+<!-- FILTRO POR ESTADO -->
+<form asp-action="FiltrarPorEstado" method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="estado" class="form-select">
+            <option value="">-- Estado --</option>
+            <option value="Activo">Activo</option>
+            <option value="Finalizado">Finalizado</option>
+            <option value="Cancelado">Cancelado</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-primary">Filtrar</button>
+    </div>
+</form>
+
+<!-- CONSULTA POR USUARIO -->
+<form asp-action="ResumenPorUsuario" method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <input type="number" name="usuarioId" class="form-control" placeholder="ID de Usuario" required />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-secondary">Resumen Usuario</button>
+    </div>
+</form>
+
+<!-- CONSULTA POR RANGO -->
+<form asp-action="AlquileresPorRango" method="get" class="row g-2 mb-4">
+    <div class="col-auto">
+        <label>Desde</label>
+        <input type="date" name="desde" class="form-control" required />
+    </div>
+    <div class="col-auto">
+        <label>Hasta</label>
+        <input type="date" name="hasta" class="form-control" required />
+    </div>
+    <div class="col-auto align-self-end">
+        <button type="submit" class="btn btn-outline-dark">Buscar por rango</button>
+    </div>
+</form>
+
+<!-- CONSULTA NUMERADOR -->
+<form asp-action="NumeradorPorId" method="get" class="row g-2 mb-4">
+    <div class="col-auto">
+        <input type="number" name="id" class="form-control" placeholder="ID Alquiler" required />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-info">Ver Numerador</button>
+    </div>
+</form>
+
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Vehículo</th>
+            <th>Empleado</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Devolución</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.AlquilerId</td>
+                    <td>@item.NombreUsuario</td>
+                    <td>@item.NombreVehiculo</td>
+                    <td>@item.NombreEmpleado</td>
+                    <td>@item.FechaInicio.ToString("dd/MM/yyyy")</td>
+                    <td>@item.FechaFin.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        @(item.FechaDevolucion.HasValue
+                                        ? item.FechaDevolucion.Value.ToString("dd/MM/yyyy")
+                                        : "No devuelto")
+            </td>
+            <td>$@item.Total.ToString("F2")</td>
+            <td>@item.Estado</td>
+            <td>
+                
+                <a asp-action="Edit" asp-route-id="@item.AlquilerId" class="btn btn-warning btn-sm">Editar</a>
+               
+            </td>
+        </tr>
+                }
+        }
+        else
+        {
+            <tr>
+                <td colspan="10" class="text-center">No hay alquileres registrados.</td>
+            </tr>
+        }
+    </tbody>
+</table>

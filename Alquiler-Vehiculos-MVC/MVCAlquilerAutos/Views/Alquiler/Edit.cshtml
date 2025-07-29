@@ -1,0 +1,66 @@
+﻿
+@model MVCAlquilerAutos.Models.Alquiler
+
+
+
+<h2 class="mt-4">Editar Alquiler</h2>
+
+<form asp-action="Edit">
+    <div class="form-group">
+        <label asp-for="AlquilerId" class="form-label"></label>
+        <input asp-for="AlquilerId" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UsuarioId" class="form-label">Usuario</label>
+        <input asp-for="UsuarioId" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="VehiculoId" class="form-label">Vehículo</label>
+        <input asp-for="VehiculoId" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EmpleadoId" class="form-label">Empleado</label>
+        <input asp-for="EmpleadoId" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FechaInicio" class="form-label">Fecha de Inicio</label>
+        <input asp-for="FechaInicio" class="form-control" type="date" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FechaFin" class="form-label">Fecha de Fin</label>
+        <input asp-for="FechaFin" class="form-control" type="date" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FechaDevolucion" class="form-label">Fecha de Devolución</label>
+        <input asp-for="FechaDevolucion" class="form-control" type="date" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Total" class="form-label">Total</label>
+        <input asp-for="Total" class="form-control" type="number" step="0.01" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Estado" class="form-label">Estado</label>
+        <select asp-for="Estado" class="form-select">
+            <option value="Activo">Activo</option>
+            <option value="Finalizado">Finalizado</option>
+            <option value="Cancelado">Cancelado</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Guardar Cambios</button>
+    <a asp-action="Index" class="btn btn-secondary mt-3 ms-2">Volver al Listado</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
