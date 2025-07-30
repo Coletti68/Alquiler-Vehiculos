@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="8dp">
+        <TextView
+            android:id="@+id/tvVehiculoInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vehículo: FIAT Cronos 2024"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+        <!-- Fecha Inicio -->
+        <EditText
+            android:id="@+id/etFechaInicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fecha de inicio"
+            android:focusable="false"
+            android:clickable="true" />
+
+        <!-- Fecha Fin -->
+        <EditText
+            android:id="@+id/etFechaFin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fecha de fin"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_marginTop="8dp" />
+
+        <!-- Monto estimado -->
+        <TextView
+            android:id="@+id/tvMontoTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total estimado: $0"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"
+            android:textStyle="bold" />
+
+        <!-- Método de pago -->
+        <Spinner
+            android:id="@+id/spnMetodoPago"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" />
+
+        <!-- Aceptar términos -->
+        <CheckBox
+            android:id="@+id/chkTerminos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Acepto los términos y condiciones"
+            android:layout_marginTop="10dp" />
+
+        <!-- Botón Confirmar -->
+        <Button
+            android:id="@+id/btnConfirmar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirmar alquiler y pagar"
+            android:layout_marginTop="16dp" />
+
+        <!-- Loading -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="16dp" />
+
+        <!-- Resultado -->
+        <TextView
+            android:id="@+id/tvResultado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginTop="12dp"
+            android:textColor="@android:color/holo_green_dark" />
+
+    </LinearLayout>
+</ScrollView>
+

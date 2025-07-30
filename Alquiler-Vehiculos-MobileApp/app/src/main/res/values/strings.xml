@@ -1,0 +1,9 @@
+<resources>
+<string name="app_name">AlquilerVehiculos</string>
+
+<string-array name="metodos_pago">
+    <item>Efectivo</item>
+    <item>Tarjeta</item>
+    <item>Transferencia</item>
+</string-array>
+</resources>

@@ -1,0 +1,47 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bienvenido"
+        android:textSize="16sp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        style="?android:attr/progressBarStyle" />
+
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#B00020"
+        android:visibility="gone"
+        android:text="Error" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvVehiculos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="12dp" />
+
+    <Button
+        android:id="@+id/btnContacto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contacto" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cerrar Sesión" />
+</LinearLayout>
