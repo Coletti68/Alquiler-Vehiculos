@@ -162,6 +162,20 @@ namespace RentCars.Api.Controllers
 
             return Ok(usuario);
         }
+
+        [HttpGet("existe-dni/{dni}")]
+        public async Task<IActionResult> VerificarDni(string dni)
+        {
+            bool existe = await _usuarioService.DniExisteAsync(dni);
+            return Ok(new { existe });
+        }
+
+        [HttpGet("existe-email/{email}")]
+        public async Task<IActionResult> VerificarEmail(string email)
+        {
+            bool existe = await _usuarioService.EmailExisteAsync(email);
+            return Ok(new { existe });
+        }
     }
 }
 

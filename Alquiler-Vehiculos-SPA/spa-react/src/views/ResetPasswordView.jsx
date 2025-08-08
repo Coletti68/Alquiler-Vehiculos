@@ -4,7 +4,7 @@ export default function ResetPasswordView() {
   const [nuevaPassword, setNuevaPassword] = useState('');
   const [email, setEmail] = useState('');
   const [token, setToken] = useState('');
-  const [estado, setEstado] = useState(null); 
+  const [estado, setEstado] = useState(null);
   const [cargando, setCargando] = useState(false);
 
   useEffect(() => {
@@ -49,21 +49,45 @@ export default function ResetPasswordView() {
           />
         </div>
 
-        <button type="submit" className="btn btn-success" disabled={cargando}>
-          {cargando ? 'Actualizando...' : 'Confirmar nueva contraseña'}
+        <button
+          type="submit"
+          className="btn btn-success d-flex align-items-center gap-2"
+          disabled={cargando}
+        >
+          {cargando ? (
+            <>
+              <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Actualizando...
+            </>
+          ) : (
+            'Confirmar nueva contraseña'
+          )}
         </button>
 
-        {estado === 'ok' && (
-          <div className="alert alert-success mt-3">
-            🎉 ¡Contraseña actualizada con éxito! Ya podés iniciar sesión.
-          </div>
-        )}
-
-        {estado === 'error' && (
-          <div className="alert alert-danger mt-3">
-            ❌ El token es inválido o expiró. Solicitá uno nuevo desde "¿Olvidaste tu contraseña?"
-          </div>
-        )}
+        <div
+          className={`mt-3 alert ${
+            estado === 'ok'
+              ? 'alert-success'
+              : estado === 'error'
+              ? 'alert-danger'
+              : ''
+          } fade ${estado ? 'show' : ''}`}
+          role="alert"
+        >
+          {estado === 'ok' && (
+            <>🎉 ¡Contraseña actualizada con éxito! Ya podés iniciar sesión.</>
+          )}
+          {estado === 'error' && (
+            <>
+              ❌ El token es inválido o expiró. Solicitá uno nuevo desde
+              "¿Olvidaste tu contraseña?"
+            </>
+          )}
+        </div>
       </form>
     </div>
   );

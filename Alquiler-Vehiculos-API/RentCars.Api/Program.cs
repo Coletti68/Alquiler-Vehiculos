@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using RentCars.Api.Data;
+using RentCars.Api.Services;
 using RentCars.Api.Services.Implementaciones;
 using RentCars.Api.Services.Interfaces;
 
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IContactoService, ContactoService>();
 builder.Services.AddScoped<IPagoService, PagoService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAlquilerService, AlquilerService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // 🌍 Habilitar CORS
 builder.Services.AddCors(options =>

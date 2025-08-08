@@ -105,6 +105,23 @@ namespace RentCars.Api.Services.Implementaciones
                 })
                 .ToListAsync();
         }
+        public async Task<IEnumerable<MultaResponse>> ObtenerMultasPorUsuarioAsync(int usuarioId)
+        {
+            return await _context.Multas
+                .Include(m => m.Alquiler)
+                .Where(m => m.Alquiler.UsuarioId == usuarioId)
+                .Select(m => new MultaResponse
+                {
+                    MultaId = m.MultaId,
+                    AlquilerId = m.AlquilerId,
+                    Descripcion = m.Descripcion,
+                    Monto = m.Monto,
+                    FechaMulta = m.FechaMulta,
+                    Estado = m.Estado,
+                    Tipo = m.Tipo
+                })
+                .ToListAsync();
+        }
 
     }
 }

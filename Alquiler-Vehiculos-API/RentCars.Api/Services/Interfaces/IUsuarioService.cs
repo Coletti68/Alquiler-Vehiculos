@@ -11,5 +11,7 @@ namespace RentCars.Api.Services.Interfaces
         Task<bool> DesactivarAsync(int id); 
         Task<IEnumerable<AlquilerResponse>> GetHistorialPorUsuarioAsync(int id);
         Task<Usuario?> GetUsuarioConAlquileresYMultasAsync(int id);
+        Task<bool> DniExisteAsync(string dni);
+        Task<bool> EmailExisteAsync(string email);
     }
 }

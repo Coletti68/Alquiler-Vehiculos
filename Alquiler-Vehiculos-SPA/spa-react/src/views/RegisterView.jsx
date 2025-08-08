@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { registrarUsuario } from '../api/auth/register';
 import { useNavigate } from 'react-router-dom';
+import { verificarDniExistente } from '../api/auth/verificarDNIexist';
+import {verificarEmailExistente} from '../api/auth/verificarEMAILexist';
 
 export default function RegisterView() {
   const [pais, setPais] = useState('');
@@ -46,6 +48,20 @@ export default function RegisterView() {
 
     if (!fechaNacimiento || calcularEdad(fechaNacimiento) < 18) {
       setMensajeError('Debés tener al menos 18 años para registrarte.');
+      setMostrarModalError(true);
+      return;
+    }
+
+    const existeDNI = await verificarDniExistente(dni);
+    if (existeDNI) {
+      setMensajeError('Ya existe un usuario registrado con ese DNI.');
+      setMostrarModalError(true);
+      return;
+    }
+
+    const existeEmail = await verificarEmailExistente(email);
+    if (existeEmail) {
+      setMensajeError('Ya existe un usuario registrado con ese Email.');
       setMostrarModalError(true);
       return;
     }

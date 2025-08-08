@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RentCars.Api.Data;
 using RentCars.Api.DTOs.Alquiler;
 using RentCars.Api.Models;
@@ -121,6 +122,15 @@ namespace RentCars.Api.Services.Implementaciones
                     Estado = a.Estado
                 })
                 .ToListAsync();
+        }
+        public async Task<bool> DniExisteAsync(string dni)
+        {
+            return await _context.Usuarios.AnyAsync(u => u.DNI == dni);
+        }
+
+        public async Task<bool> EmailExisteAsync(string email)
+        {
+            return await _context.Usuarios.AnyAsync(u => u.Email == email);
         }
     }
 }

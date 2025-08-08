@@ -24,7 +24,7 @@ function App() {
           <Route path="/contacto" element={<ContactoView />} />
           <Route path="/perfil" element={<PerfilView />} />
           <Route path="/olvide-password" element={<OlvidePasswordView />} />
-          <Route path="/reset-password" element={<ResetPasswordView />} />
+          <Route path="/restablecer-contrasenia" element={<ResetPasswordView />} />
           <Route path="/promo" element={<PromoView />} />
         </Routes>
       </main>

@@ -1,30 +1,36 @@
 import { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Asegurate de tener esto si usás npm
 
 export default function OlvidePasswordView() {
   const [email, setEmail] = useState('');
   const [enviado, setEnviado] = useState(false);
   const [error, setError] = useState('');
-  const [linkGenerado, setLinkGenerado] = useState('');
+  const [cargando, setCargando] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setEnviado(false);
-    setLinkGenerado('');
+    setCargando(true);
 
-    const res = await fetch('/api/auth/recuperar-password', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    });
+    try {
+      const res = await fetch('/api/auth/recuperar-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
 
-    if (res.ok) {
       const data = await res.json();
-      setEnviado(true);
-      setLinkGenerado(data.link); 
-    } else {
-      const data = await res.json();
-      setError(data?.mensaje || 'No se pudo generar el enlace.');
+
+      if (res.ok) {
+        setEnviado(true);
+      } else {
+        setError(data?.mensaje || 'No se pudo generar el enlace.');
+      }
+    } catch (err) {
+      setError('Error de conexión. Intentá nuevamente.');
+    } finally {
+      setCargando(false);
     }
   };
 
@@ -44,33 +50,36 @@ export default function OlvidePasswordView() {
           />
         </div>
 
+        <button
+          type="submit"
+          className="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+          disabled={cargando}
+          style={{ minWidth: '180px' }}
+        >
+          {cargando ? (
+            <>
+              <span
+                className="spinner-border spinner-border-sm text-light"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span>Enviando...</span>
+            </>
+          ) : (
+            'Enviar enlace'
+          )}
+        </button>
+
         {enviado && (
-          <div className="alert alert-success">
-            ✅ Link generado con éxito.
+          <div className="alert alert-success mt-3 fade show" role="alert">
+            ✅ Link generado con éxito. Revisá tu correo para continuar.
           </div>
         )}
 
         {error && (
-          <div className="alert alert-danger">{error}</div>
-        )}
-
-        <button type="submit" className="btn btn-primary">
-          Enviar enlace
-        </button>
-
-        {linkGenerado && (
-  <div className="alert alert-info mt-3">
-    <strong>Link generado:</strong><br />
-    <a href={linkGenerado} target="_blank" rel="noopener noreferrer">
-      {linkGenerado}
-    </a>
-
-    {!linkGenerado.startsWith('http://localhost:5173') && (
-      <div className="text-danger mt-2">
-        ⚠️ Atención: el link no apunta al frontend (debería comenzar con <code>http://localhost:5173</code>)
-      </div>
-        )}
-       </div>
+          <div className="alert alert-danger mt-3 fade show" role="alert">
+            ❌ {error}
+          </div>
         )}
       </form>
     </div>

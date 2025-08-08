@@ -6,7 +6,6 @@ using RentCars.Api.DTOs.Auth;
 using RentCars.Api.Services.Interfaces;
 using System.Security.Claims;
 
-
 namespace RentCars.Api.Controllers
 {
     [ApiController]
@@ -15,11 +14,13 @@ namespace RentCars.Api.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ITokenService _tokenService;
+        private readonly IEmailService _emailService;
 
-        public AuthController(ApplicationDbContext context, ITokenService tokenService)
+        public AuthController(ApplicationDbContext context, ITokenService tokenService, IEmailService emailService)
         {
             _context = context;
             _tokenService = tokenService;
+            _emailService = emailService;
         }
 
         [HttpPost("login")]
@@ -50,7 +51,7 @@ namespace RentCars.Api.Controllers
                     Email = usuario.Email
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, new { mensaje = "Ocurrió un error inesperado. Contactá con soporte si el problema persiste." });
             }
@@ -67,10 +68,12 @@ namespace RentCars.Api.Controllers
             usuario.ResetTokenExpira = DateTime.UtcNow.AddHours(1);
             await _context.SaveChangesAsync();
 
-            var link = $"http://localhost:5173/reset-password?email={usuario.Email}&token={Uri.EscapeDataString(token)}";
-            Console.WriteLine($"🧭 LINK: {link}");
+            string frontendUrl = "http://localhost:5173"; // o tu dominio real
+            string link = $"{frontendUrl}/restablecer-contrasenia?token={Uri.EscapeDataString(token)}&email={Uri.EscapeDataString(usuario.Email)}";
 
-            return Ok(new { mensaje = "Token generado", link });
+            await _emailService.EnviarEmailRecuperacionAsync(usuario.Nombre_Completo, usuario.Email, link);
+
+            return Ok(new { mensaje = "Email enviado con el enlace para restablecer la contraseña." });
         }
 
         [HttpPost("resetear-password")]
@@ -100,6 +103,7 @@ namespace RentCars.Api.Controllers
             var user = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
 
             if (user == null) return NotFound();
+
             return Ok(new
             {
                 user.UsuarioId,
@@ -108,6 +112,5 @@ namespace RentCars.Api.Controllers
                 user.Rol
             });
         }
-
     }
 }

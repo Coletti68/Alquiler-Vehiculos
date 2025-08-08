@@ -20,8 +20,13 @@ export const iniciarSesion = async (email, password) => {
 
   const data = await response.json();
 
+  // Guardar todo lo necesario en localStorage
   localStorage.setItem('token', data.token);
-  localStorage.setItem('usuarioId', data.usuarioId);
+  localStorage.setItem('user', JSON.stringify({
+    id: data.usuarioId,
+    nombre: data.nombreCompleto,
+    email: data.email
+  }));
 
   return data;
 };

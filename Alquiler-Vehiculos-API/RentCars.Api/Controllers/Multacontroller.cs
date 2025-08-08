@@ -57,5 +57,12 @@ namespace RentCars.Api.Controllers
             var multas = await _multaService.ObtenerMultasImpagasAsync();
             return multas.Any() ? Ok(multas) : NotFound("No hay multas impagas registradas.");
         }
+
+        [HttpGet("usuario/{usuarioId}")]
+        public async Task<IActionResult> ObtenerMultasPorUsuario(int usuarioId)
+        {
+            var multas = await _multaService.ObtenerMultasPorUsuarioAsync(usuarioId);
+            return Ok(multas);
+        }
     }
 }

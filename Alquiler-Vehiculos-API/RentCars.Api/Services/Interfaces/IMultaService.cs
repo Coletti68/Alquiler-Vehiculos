@@ -10,5 +10,6 @@ namespace RentCars.Api.Services.Interfaces
         Task<bool> DeleteAsync(int id);
         Task<IEnumerable<MultaResumenResponse>> ObtenerMultasImpagasAsync();
         Task<bool> CambiarEstadoAsync(int id, string nuevoEstado);
+        Task<IEnumerable<MultaResponse>> ObtenerMultasPorUsuarioAsync(int usuarioId);
     }
 }

@@ -28,8 +28,7 @@ export default function NavBar() {
                   <NavLink className="nav-link fw-semibold neon-link" to="/contacto">Contacto</NavLink>
                 </li>
                 <li className="nav-item d-flex align-items-center text-white">
-                  <span className="me-2">👤 {user?.nombre}</span>
-                  <NavLink className="nav-link fw-semibold neon-link" to="/perfil">Mi Perfil</NavLink>
+                  <NavLink className="nav-link fw-semibold neon-link" to="/perfil">👤 Mi Perfil</NavLink>
                 </li>
               </>
             )}
