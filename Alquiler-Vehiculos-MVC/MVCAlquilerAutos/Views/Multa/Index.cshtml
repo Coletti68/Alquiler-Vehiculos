@@ -1,0 +1,31 @@
+﻿@model IEnumerable<MVCAlquilerAutos.Models.Multa>
+
+<h2 class="mt-4">Multas Registradas</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Alquiler</th>
+            <th>Descripción</th>
+            <th>Monto</th>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var multa in Model)
+        {
+            <tr>
+                <td>@multa.MultaId</td>
+                <td>@multa.AlquilerId</td>
+                <td>@multa.Descripcion</td>
+                <td>$@multa.Monto.ToString("F2")</td>
+                <td>@multa.FechaMulta.ToString("dd/MM/yyyy")</td>
+                <td>@multa.Tipo</td>
+                <td>@multa.Estado</td>
+            </tr>
+        }
+    </tbody>
+</table>

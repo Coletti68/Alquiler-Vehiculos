@@ -1,0 +1,33 @@
+﻿@model List<Contacto>
+
+<h2>Mensajes pendientes</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Motivo</th>
+            <th>Mensaje</th>
+            <th>Fecha</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contacto in Model)
+        {
+            <tr>
+                <td>@contacto.Email</td>
+                <td>@contacto.Motivo</td>
+                <td>@contacto.Mensaje</td>
+                <td>@contacto.Fecha.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <form asp-action="Responder" method="post">
+                        <input type="hidden" name="id" value="@contacto.ContactoId" />
+                        <button type="submit" class="btn btn-success">Marcar como respondido</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
